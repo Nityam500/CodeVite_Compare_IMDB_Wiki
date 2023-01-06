@@ -18,7 +18,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class CompareIMDBWiki {
 	
 	
-	static ChromeDriver openURL(String URL) {    
+	static ChromeDriver openURL(String URL) 							//Mthod to setup Webdriver & Open give URL on Maximum window
+	{    
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver();
 		driver.manage().window().maximize();
@@ -27,18 +28,20 @@ public class CompareIMDBWiki {
 	}
 	
 	
-	static String filterIMDBDate(String str){
-		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");  //Input format
+	static String filterIMDBDate(String str)							//Method to change Data format of IMDB
+	{
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");         //Input format Eg: January 19, 2005
 		LocalDate date = LocalDate.parse(str, inputFormatter);   //Parse input string
 		
-		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //Output format
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");           //Output format  Eg: 2005-01-19
 		String output = date.format(outputFormatter); //convert final date to string
 		
 		return output;
 	}
 	
 	
-	static String getIMDBInfo(String movieName) throws InterruptedException {
+	static String getIMDBInfo(String movieName) throws InterruptedException 			//Method to get Data from IMDB
+	{
 		ChromeDriver driver = openURL("https://www.imdb.com/");
 		
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -65,7 +68,8 @@ public class CompareIMDBWiki {
 	}
 	
 	
-	static String getWikiInfo(String movieName) throws InterruptedException {
+	static String getWikiInfo(String movieName) throws InterruptedException 			//Method to Get Data from Wiki
+	{		
 		movieName = movieName.replaceAll(" ", "_");
 		
 		ChromeDriver driver = openURL("https://en.wikipedia.org/wiki/"+movieName);
@@ -85,7 +89,8 @@ public class CompareIMDBWiki {
 	
 	@Test
 	public void compareResult() throws InterruptedException{
-		String movieName = "Pushpa: The Rise";
+		String movieName = "Pushpa: The Rise";	      						//Change Movie Name Here Case Sensitive & Proper Format
+	
 		String IMDBInfo =  getIMDBInfo(movieName),wikiInfo = getWikiInfo(movieName);
 		
 		String[] IMDB = IMDBInfo.split("\\|");
